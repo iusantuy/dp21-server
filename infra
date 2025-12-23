@@ -1,0 +1,67 @@
+invoice/                       # main Django app
+ ├─ application/               # application layer (use cases / services)
+ │   ├─ services/
+ │   │   └─ invoice_service.py  # business logic / orchestration
+ │   └─ __init__.py
+ │
+ ├─ domain/                    # domain layer (entities, value objects)
+ │   └─ entities.py            # InvoiceEntity, InvoiceItemEntity
+ │
+ ├─ infrastructure/            # infrastructure layer (models, DB)
+ │   ├─ models.py               # Django models Invoice & InvoiceItem
+ │   └─ __init__.py
+ │
+ ├─ presentation/              # presentation layer (views / DRF endpoints)
+ │   └─ views.py               # InvoiceCreateView, InvoiceDetailView
+ │
+ ├─ templates/                 # HTML templates (invoice PDF / preview)
+ │   └─ invoice_template.html
+ │
+ ├─ migrations/                # Django migrations
+ │   └─ __init__.py
+ │
+ ├─ tests/                     # testing suite (unit, integration, api)
+ │   ├─ unit/
+ │   │   ├─ test_entities.py
+ │   │   └─ test_services.py
+ │   ├─ integration/
+ │   │   ├─ test_models.py
+ │   │   └─ test_services_db.py
+ │   ├─ api/
+ │   │   └─ test_views.py
+ │   └─ conftest.py            # shared fixtures
+ │
+ ├─ serializers.py             # DRF serializers
+ ├─ urls.py                    # app-specific urls
+ └─ __init__.py
+
+
+bro gue lg bikin website toko bakery bro dan lg buat fitur invoice pake next js dan django, nah gue pengen nya ketika admin input data di form input invoice nya, nnt muncul preview template invoice, nah gue pengen untuk data Nomor Tagihan tuh format nya kek gni bro 01/DCP/XI/25, jadi 01 tuh pesanan ke berapa dari pelanggan yg sama, XI itu bulan tapi pake romawi, dan 25 itu tahun, tapi gue pengen nya otomatis ke-generate di django nya buat Nomor Tagihan, dan di form input itu ada label "Kepada" maksud nya itu pelanggan, jadi ketika admin input data "Kepada" untuk pesanan dari pelanggan yg sama, auto increment yg Nomor Tagihan 01 nya
+oh iya bro btw design project django gue kek gni buat yg app invoice, di dlm folder app invoice ada folder application, domain, infrastructure, migrations, presentation, templates, templatetags, dan test, di dlm folder application ada folder services, yg di dlm nya ada file invoice_service.py, di dlm folder domain ada file entities.py, di dlm folder infrastructure ada file models.py, di dlm folder presentation ada file views.py
+tapi kode nya yg clean-code clean-architecture best practice production-ready scalable maintainable modular performance secure high quality robust reliable
+
+
+🍰
+
+
+
+
+
+
+
+
+
+invoices/
+ ├─ tests/
+ │   ├─ unit/
+ │   │   ├─ test_entities.py
+ │   │   └─ test_services.py
+ │   ├─ integration/
+ │   │   ├─ test_models.py        # model + DB tests
+ │   │   └─ test_services_db.py   # service + DB + transaction tests
+ │   ├─ api/
+ │   │   └─ test_views.py
+ │   └─ conftest.py               # shared fixtures
+
+
+

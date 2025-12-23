@@ -1,0 +1,188 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Invoice {{ invoice_number }}</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f9fafb; padding: 0; margin:0;">
+
+  <!-- Invoice Container -->
+  <div style="position: relative; background: white; border-radius:8px; width:210mm; min-height:297mm; margin:40px auto; padding:32px; box-sizing:border-box; box-shadow:0 0 10px rgba(0,0,0,0.05);">
+
+    <!-- Background Watermark -->
+    {% for w in watermarks %}
+    <span style="
+      position:absolute;
+      top:{{ w.top }};
+      left:{{ w.left }};
+      font-size:48px;
+      font-weight:bold;
+      color:#d1d5db;
+      opacity:0.1;
+      transform:rotate(-45deg);
+      user-select:none;
+      pointer-events:none;
+      white-space:nowrap;
+    ">{{ store_name }}</span>
+    {% endfor %}
+
+    <!-- Konten Utama -->
+    <div style="margin-bottom:150px;"> <!-- kasih bottom margin biar konten ga ketabrak signatures -->
+      <!-- Header -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #000; padding-bottom:16px; margin-bottom:24px;">
+        <div style="flex:1;">
+          <h1 style="font-size:32px; font-weight:bold; margin:0; color:#111827;">INVOICE</h1>
+          <p style="margin:4px 0 0; font-size:16px; color:#6b7280;">Snacks dan Lunch Boxes</p>
+          <p style="margin:8px 0 0; font-size:16px; color:#374151;">
+            <strong>Nomor Tagihan:</strong> {{ invoice_number }}<br>
+            <strong>Tanggal:</strong> {{ date }}
+          </p>
+        </div>
+        {% if store_logo_url %}
+        <div style="flex-shrink:0;">
+          <img src="{{ store_logo_url }}" alt="{{ store_name }} logo" style="width:150px; height:150px; object-fit:contain;">
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Customer Info -->
+      <div style="display:flex; justify-content:space-between; font-size:14px; color:#374151; margin-bottom:24px;">
+        <div>
+          <strong>Kepada:</strong>
+          <p>{{ customer_name }}</p>
+        </div>
+        <div style="text-align:right;">
+          <strong>Kontak</strong>
+          <p>{{ contact }}</p>
+          <p>{{ phone_number }}</p>
+        </div>
+      </div>
+
+      <!-- Items Table -->
+      <table style="width:100%; border-collapse:collapse; font-size:17px; margin-bottom:16px;">
+        <thead>
+          <tr style="background-color:#9ca3af; border-bottom:1px solid #9ca3af;">
+            <th style="text-align:left; padding:10px;">Menu</th>
+            <th style="text-align:center; padding:10px;">Porsi</th>
+            <th style="text-align:right; padding:10px;">Harga</th>
+            <th style="text-align:right; padding:10px;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr style="border-bottom:1px solid #9ca3af;">
+            <td style="padding:10px; color:#374151;">{{ item.name }}</td>
+            <td style="padding:10px; text-align:center; color:#374151;">{{ item.quantity }}</td>
+            <td style="padding:10px; text-align:right; color:#374151;">Rp {{ item.price|rupiah}}</td>
+            <td style="padding:10px; text-align:right; color:#374151;">Rp {{ item.quantity|mul:item.price|rupiah}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Totals Section -->
+      <div style="text-align:right; font-size:18px; color:#111827; margin-bottom:24px;">
+        <p style="margin:4px 0;"><strong>Total Harga Item:</strong> Rp {{ subtotal|rupiah}}</p>
+        <p style="margin:4px 0;"><strong>DP:</strong> Rp {{ dp|rupiah}}</p>
+        <p style="margin:4px 0; font-weight:bold;"><strong>Sisa Pembayaran:</strong> Rp {{ total|rupiah }}</p>
+      </div>
+
+      <!-- Payment Info -->
+      <div style="border-top:1px solid #e5e7eb; padding-top:12px; font-size:14px; color:#374151;">
+        <p style="margin:0;"><strong>Pembayaran:</strong> {{ payment_method }}<strong>13100 2456 0734</strong></strong></p>
+        <p style="margin:0; color: red"><strong>Ket:</strong> {{ ket }}</p>
+      </div>
+    </div>
+
+    <!-- Signatures -->
+    <div style="
+      position: absolute;
+      bottom:30mm; 
+      left:32px;
+      right:32px;
+      display:flex;
+      justify-content:space-between;
+      text-align:center;
+    ">
+      <div style="width:45%;">
+        <p style="margin-bottom:100px;">Tanda Terima,</p>
+        <p style="margin:0; border-top:1px solid #000; display:inline-block; width:80%;"></p>
+      </div>
+      <div style="width:45%;">
+        <p style="margin-bottom:100px;">Hormat Kami,</p>
+        <p style="margin:0; border-top:1px solid #000; display:inline-block; width:80%;"></p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="
+      position:absolute;
+      bottom:10mm;
+      left:0;
+      width:100%;
+      text-align:center;
+      font-size:12px;
+      color:#9ca3af;
+    ">
+      <div style="position: relative; width: 100%; border-top: 1px solid #8f95a1; height:20px;">
+        <div style="position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:white; display:flex; align-items:center; gap:6px; padding:0 4px;">
+          <!-- <img src="{{ store_logo_url }}" alt='Instagram' style='width:14px;height:14px;'> -->
+          <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt='Instagram' style='width:14px;height:14px;'> -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+          </svg>
+          <span>@dolcepapa.21</span>
+        </div>
+      </div>
+      <p style="margin:4px 0 0 0; font-style:italic; color:#6b7280;">Life is Sweeter with Papa’s Sugar</p>
+    </footer>
+
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
